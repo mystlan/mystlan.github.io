@@ -1,0 +1,66 @@
+{
+  "targetDate":"2026-12-21",
+  "profiles":{
+    "late":{
+      "label":"晚班 13:15–21:15",
+      "targetHours":"3.0–3.5h",
+      "note":"上午是黄金时间，数学优先；中午补408，通勤放英语，晚上只做轻复盘。",
+      "slots":[
+        {"time":"08:30–09:20","subject":"数学","title":"函数基础快速检查","minutes":50},
+        {"time":"09:30–10:25","subject":"数学","title":"极限概念 + 左右极限","minutes":55},
+        {"time":"10:35–11:20","subject":"数学","title":"极限基础题 8–12 道","minutes":45},
+        {"time":"11:20–12:05","subject":"408","title":"一级指针抢救 / 当前408主线","minutes":45},
+        {"time":"通勤 25–35min","subject":"英语","title":"墨墨词汇恢复","minutes":30},
+        {"time":"下班后 5–10min","subject":"复盘","title":"记录完成情况与最大卡点","minutes":10}
+      ]
+    },
+    "early":{
+      "label":"早班 08:30–16:30",
+      "targetHours":"2.3–3.0h",
+      "note":"早上不硬塞重学习；下班后先恢复体力，再做数学和408，英语放通勤或睡前。",
+      "slots":[
+        {"time":"通勤 25–35min","subject":"英语","title":"墨墨词汇复习","minutes":30},
+        {"time":"18:10–19:00","subject":"数学","title":"当前数学主线学习","minutes":50},
+        {"time":"19:10–20:00","subject":"数学","title":"对应基础题 / 例题","minutes":50},
+        {"time":"20:15–21:00","subject":"408","title":"当前408主线","minutes":45},
+        {"time":"21:10–21:30","subject":"复盘","title":"错题与卡点整理","minutes":20}
+      ]
+    },
+    "rest":{
+      "label":"休息日",
+      "targetHours":"6.0–7.5h",
+      "note":"不追求坐满一天；上午数学、下午408，晚上英语与复盘，中间留恢复时间。",
+      "slots":[
+        {"time":"09:00–10:30","subject":"数学","title":"当前数学主线深度学习","minutes":90},
+        {"time":"10:45–12:00","subject":"数学","title":"对应刷题与订正","minutes":75},
+        {"time":"14:00–15:30","subject":"408","title":"当前408主线学习","minutes":90},
+        {"time":"15:45–16:45","subject":"408","title":"对应练习 / 代码理解","minutes":60},
+        {"time":"19:00–19:45","subject":"英语","title":"墨墨 + 长难句 / 阅读","minutes":45},
+        {"time":"20:00–20:45","subject":"数学","title":"当天薄弱点回炉","minutes":45},
+        {"time":"20:45–21:05","subject":"复盘","title":"记录结果并生成明日调整依据","minutes":20}
+      ]
+    },
+    "weekendEarly":{
+      "label":"7:55–15:55 班",
+      "targetHours":"2.2–2.8h",
+      "note":"下班较早，但仍按工作日强度控制，避免把周末早班误当休息日。",
+      "slots":[
+        {"time":"通勤 25–35min","subject":"英语","title":"墨墨词汇复习","minutes":30},
+        {"time":"17:30–18:20","subject":"数学","title":"当前数学主线","minutes":50},
+        {"time":"18:30–19:20","subject":"408","title":"当前408主线","minutes":50},
+        {"time":"19:35–20:15","subject":"数学","title":"基础题 / 错题回炉","minutes":40},
+        {"time":"20:20–20:35","subject":"复盘","title":"记录完成情况与卡点","minutes":15}
+      ]
+    },
+    "lowEnergy":{
+      "label":"低状态保底",
+      "targetHours":"1.3–1.6h",
+      "note":"只保留最低线，不让一天彻底断掉。",
+      "slots":[
+        {"time":"碎片 20min","subject":"英语","title":"词汇复习","minutes":20},
+        {"time":"主学习 45min","subject":"数学","title":"当前数学主线最低任务","minutes":45},
+        {"time":"复盘 20min","subject":"复盘","title":"错题 / 卡点回看","minutes":20}
+      ]
+    }
+  }
+}
