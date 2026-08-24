@@ -32,6 +32,7 @@
     <button class="tab active" data-view="dashboard">驾驶舱</button>
     <button class="tab" data-view="today">今日执行</button>
     <button class="tab" data-view="vocab">词汇</button>
+    <button class="tab" data-view="fragment">碎片池</button>
     <button class="tab" data-view="map">学习地图</button>
     <button class="tab" data-view="review">复习中心</button>
     <button class="tab" data-view="history">历史与复盘</button>
@@ -85,6 +86,7 @@
           <button id="generatePlan" class="primary">按班次生成今日计划</button>
         </div>
         <div id="planAdvice" class="plan-advice"></div>
+        <div id="fragmentAutoNote" class="plan-advice" style="display:none"></div>
         <div id="planTimeline" class="timeline"></div>
       </article>
 
@@ -130,9 +132,32 @@
       </article>
       <div id="vocabStats" class="subject-grid"></div>
       <article class="panel">
+        <div class="section-head"><div><h2>连续性与本周趋势</h2><p>防止在职备考中词汇悄悄断更。</p></div><span id="vocabStreakBadge" class="badge">连续 0 天</span></div>
+        <div class="subject-grid" style="margin-top:14px">
+          <div class="metric"><span>连续打卡</span><b id="vocabStreak">0</b><small>天</small></div>
+          <div class="metric"><span>本周新增</span><b id="vocabWeekNew">0</b><small>词</small></div>
+          <div class="metric"><span>本周复习</span><b id="vocabWeekReviewed">0</b><small>词</small></div>
+          <div class="metric"><span>本周用时</span><b id="vocabWeekMinutes">0</b><small>分钟</small></div>
+        </div>
+        <div id="vocabTrend" style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;min-height:130px"></div>
+      </article>
+      <article class="panel">
         <div class="section-head"><div><h2>词汇进度</h2><p>根据你每天填的墨墨数据计算。</p></div><span id="vocabProgressText" class="badge">0%</span></div>
         <div class="progress"><span id="vocabProgressBar"></span></div>
         <div id="vocabHistory" class="stack"></div>
+      </article>
+    </section>
+
+    <section id="view-fragment" class="view hidden">
+      <article class="panel">
+        <div class="section-head"><div><h2>通勤 / 碎片任务池</h2><p>轻任务单独管理；选班次后会优先自动塞进通勤和零碎时间。</p></div><span id="fragmentEnabledCount" class="badge">0 项启用</span></div>
+        <div class="add-grid" style="margin-top:14px">
+          <select id="fragmentSubject"><option>词汇</option><option>政治</option><option>数学</option><option>408</option><option>复盘</option></select>
+          <input id="fragmentTitle" placeholder="如 政治音频20分钟">
+          <input id="fragmentMinutes" type="number" min="5" step="5" value="20">
+          <button id="addFragment" class="primary">加入碎片池</button>
+        </div>
+        <div id="fragmentPool" class="task-grid"></div>
       </article>
     </section>
 
@@ -173,5 +198,6 @@
 </div>
 <script src="./app.js" defer></script>
 <script src="./settings-vocab.js" defer></script>
+<script src="./fragment-pool.js" defer></script>
 </body>
 </html>
