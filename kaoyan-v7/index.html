@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>115天在职考研系统 V7</title>
-<link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./styles.css?v=20260824-2322">
 </head>
 <body>
 <div class="app-shell">
@@ -32,7 +32,7 @@
     <button class="tab active" data-view="dashboard">驾驶舱</button>
     <button class="tab" data-view="today">今日执行</button>
     <button class="tab" data-view="vocab">词汇</button>
-    <button class="tab" data-view="fragment">碎片池</button>
+    <button class="tab" data-view="fragment">🧩 碎片池</button>
     <button class="tab" data-view="map">学习地图</button>
     <button class="tab" data-view="review">复习中心</button>
     <button class="tab" data-view="history">历史与复盘</button>
@@ -57,6 +57,9 @@
           </div>
         </article>
       </div>
+      <article class="panel" style="border-style:dashed">
+        <div class="section-head"><div><h2>🧩 通勤 / 碎片任务池</h2><p>墨墨、政治音频、公式默写、错题回看等轻任务统一放这里。</p></div><button class="primary" type="button" onclick="document.querySelector('.tab[data-view=fragment]')?.click()">打开碎片池</button></div>
+      </article>
       <div id="subjectCards" class="subject-grid"></div>
       <article class="panel">
         <h2>阶段路线</h2>
@@ -87,6 +90,7 @@
         </div>
         <div id="planAdvice" class="plan-advice"></div>
         <div id="fragmentAutoNote" class="plan-advice" style="display:none"></div>
+        <div style="margin-top:10px"><button type="button" onclick="document.querySelector('.tab[data-view=fragment]')?.click()">🧩 查看 / 管理碎片池</button></div>
         <div id="planTimeline" class="timeline"></div>
       </article>
 
@@ -150,7 +154,7 @@
 
     <section id="view-fragment" class="view hidden">
       <article class="panel">
-        <div class="section-head"><div><h2>通勤 / 碎片任务池</h2><p>轻任务单独管理；选班次后会优先自动塞进通勤和零碎时间。</p></div><span id="fragmentEnabledCount" class="badge">0 项启用</span></div>
+        <div class="section-head"><div><h2>🧩 通勤 / 碎片任务池</h2><p>轻任务单独管理；选班次后会优先自动塞进通勤和零碎时间。</p></div><span id="fragmentEnabledCount" class="badge">0 项启用</span></div>
         <div class="add-grid" style="margin-top:14px">
           <select id="fragmentSubject"><option>词汇</option><option>政治</option><option>数学</option><option>408</option><option>复盘</option></select>
           <input id="fragmentTitle" placeholder="如 政治音频20分钟">
@@ -196,8 +200,8 @@
     </section>
   </main>
 </div>
-<script src="./app.js" defer></script>
-<script src="./settings-vocab.js" defer></script>
-<script src="./fragment-pool.js" defer></script>
+<script src="./app.js?v=20260824-2322" defer></script>
+<script src="./settings-vocab.js?v=20260824-2322" defer></script>
+<script src="./fragment-pool.js?v=20260824-2322" defer></script>
 </body>
 </html>
