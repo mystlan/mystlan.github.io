@@ -108,3 +108,15 @@
   window.addEventListener('DOMContentLoaded',()=>{renderTarget();renderVocab()},{once:true});
   setTimeout(()=>{renderTarget();renderVocab()},300);
 })();
+
+(()=>{
+  const load=()=>{
+    if(document.querySelector('script[data-daily-code]'))return;
+    const s=document.createElement('script');
+    s.src='./daily-code.js?v=20260825-0035';
+    s.defer=true;
+    s.dataset.dailyCode='1';
+    document.head.appendChild(s);
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
+})();
