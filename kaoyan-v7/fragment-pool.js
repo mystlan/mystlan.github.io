@@ -56,3 +56,19 @@
   }
   if(document.readyState==='loading')window.addEventListener('DOMContentLoaded',bind,{once:true});else bind();
 })();
+
+(()=>{
+  function loadCloudSync(){
+    if(window.kaoyanCloud)return;
+    const cloud=document.createElement('script');
+    cloud.src='./cloud-sync.js?v=20260824-2355';
+    cloud.defer=true;
+    document.head.appendChild(cloud);
+  }
+  if(window.supabase?.createClient){loadCloudSync();return;}
+  const sdk=document.createElement('script');
+  sdk.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+  sdk.onload=loadCloudSync;
+  sdk.onerror=()=>console.warn('Supabase SDK failed to load; cloud sync remains off.');
+  document.head.appendChild(sdk);
+})();
