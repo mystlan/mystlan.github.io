@@ -18,15 +18,20 @@
       <div class="countdown-box">
         <span>距目标考试日</span>
         <strong><em id="countdownDays">--</em> 天</strong>
-        <small id="targetDateLabel">目标日 --</small>
+        <small id="targetDateLabel">请设置目标日期</small>
+        <div style="display:flex;gap:6px;margin-top:8px;align-items:center">
+          <input id="targetDateInput" type="date" aria-label="目标考试日期" style="min-width:0;width:138px;padding:6px 8px;border:1px solid #d0d5dd;border-radius:8px;background:#fff;color:#344054;font:inherit;font-size:12px">
+          <button id="saveTargetDate" type="button" style="padding:6px 8px;font-size:12px">保存</button>
+        </div>
       </div>
-      <div class="stage-box"><span>当前阶段</span><strong>基础重建</strong><small>Day 1：8/25</small></div>
+      <div class="stage-box"><span>当前阶段</span><strong>基础重建</strong><small>按你的目标日动态判断</small></div>
     </div>
   </header>
 
   <nav class="tabs" aria-label="主导航">
     <button class="tab active" data-view="dashboard">驾驶舱</button>
     <button class="tab" data-view="today">今日执行</button>
+    <button class="tab" data-view="vocab">词汇</button>
     <button class="tab" data-view="map">学习地图</button>
     <button class="tab" data-view="review">复习中心</button>
     <button class="tab" data-view="history">历史与复盘</button>
@@ -45,7 +50,8 @@
           <div class="focus-list">
             <div><span>数学一</span><b>函数、极限、连续</b></div>
             <div><span>408</span><b>一级指针 → 数据结构</b></div>
-            <div><span>英语一</span><b>词汇恢复 + 阅读基线</b></div>
+            <div><span>英语一</span><b>真题阅读 / 长难句基线</b></div>
+            <div><span>词汇</span><b id="vocabFocus">墨墨每日数据待记录</b></div>
             <div><span>政治</span><b>暂不抢黄金时间</b></div>
           </div>
         </article>
@@ -94,16 +100,39 @@
       </article>
       <article class="panel">
         <h2>今日学习反馈</h2>
-        <p class="muted">只填事实，不需要自己分析。</p>
+        <p class="muted">这里只填主科学习结果；墨墨数据改到“词汇”模块单独记录。</p>
         <div class="feedback-grid">
           <label>有效学习（小时）<input id="actualHours" type="number" min="0" step="0.1"></label>
           <label>数学做题/正确<input id="mathQa" placeholder="如 12/8"></label>
           <label>408做题/正确<input id="csQa" placeholder="如 10/6"></label>
-          <label>英语墨墨（分钟）<input id="wordMinutes" type="number" min="0"></label>
+          <label>英语阅读/长难句<input id="wordMinutes" placeholder="如 阅读1篇 / 25min"></label>
           <label class="wide">最大卡点<textarea id="dayBlock"></textarea></label>
           <label>状态<select id="dayEnergy"><option value="">请选择</option><option>很好</option><option>一般</option><option>疲惫</option><option>很差</option></select></label>
         </div>
         <button id="saveDay" class="primary">保存今日反馈</button>
+      </article>
+    </section>
+
+    <section id="view-vocab" class="view hidden">
+      <article class="panel">
+        <div class="section-head"><div><h2>词汇 · 墨墨每日数据</h2><p>词汇单独管理，不再混进英语主科学习进度。</p></div><span id="vocabTodayBadge" class="badge">今日未记录</span></div>
+        <div class="feedback-grid" style="margin-top:16px">
+          <label>已学总词数<input id="vocabLearnedTotal" type="number" min="0" placeholder="如 1062"></label>
+          <label>词库总词数<input id="vocabBookTotal" type="number" min="1" value="5683"></label>
+          <label>当前待复习<input id="vocabPending" type="number" min="0" placeholder="如 846"></label>
+          <label>今日复习完成<input id="vocabReviewed" type="number" min="0" placeholder="如 150"></label>
+          <label>今日新学<input id="vocabNew" type="number" min="0" placeholder="如 20"></label>
+          <label>今日用时（分钟）<input id="vocabMinutes" type="number" min="0" placeholder="如 35"></label>
+          <label>模糊/忘记词<input id="vocabWeak" type="number" min="0" placeholder="可选"></label>
+          <label>备注<input id="vocabNote" placeholder="如 今天复习压力较大"></label>
+        </div>
+        <button id="saveVocab" class="primary">保存今日墨墨数据</button>
+      </article>
+      <div id="vocabStats" class="subject-grid"></div>
+      <article class="panel">
+        <div class="section-head"><div><h2>词汇进度</h2><p>根据你每天填的墨墨数据计算。</p></div><span id="vocabProgressText" class="badge">0%</span></div>
+        <div class="progress"><span id="vocabProgressBar"></span></div>
+        <div id="vocabHistory" class="stack"></div>
       </article>
     </section>
 
@@ -143,5 +172,6 @@
   </main>
 </div>
 <script src="./app.js" defer></script>
+<script src="./settings-vocab.js" defer></script>
 </body>
 </html>
