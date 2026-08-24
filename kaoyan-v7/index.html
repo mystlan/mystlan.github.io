@@ -14,7 +14,14 @@
       <h1>V7 · Web版</h1>
       <p>前台轻量化：地图、任务、进度和历史分离加载。</p>
     </div>
-    <div class="stage-box"><span>当前阶段</span><strong>基础重建</strong><small>Day 1：8/25</small></div>
+    <div class="topbar-right">
+      <div class="countdown-box">
+        <span>距目标考试日</span>
+        <strong><em id="countdownDays">--</em> 天</strong>
+        <small id="targetDateLabel">目标日 --</small>
+      </div>
+      <div class="stage-box"><span>当前阶段</span><strong>基础重建</strong><small>Day 1：8/25</small></div>
+    </div>
   </header>
 
   <nav class="tabs" aria-label="主导航">
@@ -29,7 +36,7 @@
     <section id="view-dashboard" class="view">
       <div class="hero-grid">
         <article class="panel">
-          <div class="section-head"><div><h2>今日执行概览</h2><p>只加载今天任务，不把全部历史塞进首页。</p></div><span id="todayRate" class="badge">0%</span></div>
+          <div class="section-head"><div><h2>今日执行概览</h2><p>根据班次自动生成建议时间与学习任务。</p></div><span id="todayRate" class="badge">0%</span></div>
           <div class="progress"><span id="todayBar"></span></div>
           <div id="todayMini" class="mini-list"></div>
         </article>
@@ -57,10 +64,28 @@
     </section>
 
     <section id="view-today" class="view hidden">
+      <article class="panel planner-panel">
+        <div class="section-head"><div><h2>AI式班次计划</h2><p>选班次后自动给出建议时间、学习量和任务结构；你只需要执行，必要时再微调。</p></div><span id="planTarget" class="badge">--</span></div>
+        <div class="planner-controls">
+          <label>今天班次
+            <select id="shiftSelect">
+              <option value="late">晚班 13:15–21:15</option>
+              <option value="early">早班 08:30–16:30</option>
+              <option value="rest">休息日</option>
+              <option value="weekendEarly">7:55–15:55 班</option>
+              <option value="lowEnergy">低状态保底</option>
+            </select>
+          </label>
+          <button id="generatePlan" class="primary">按班次生成今日计划</button>
+        </div>
+        <div id="planAdvice" class="plan-advice"></div>
+        <div id="planTimeline" class="timeline"></div>
+      </article>
+
       <article class="panel">
         <div class="section-head"><div><h2>今日执行</h2><p>默认由我安排，你可以临时改动。</p></div><span id="todaySummary" class="badge">0 / 0 完成</span></div>
         <div class="add-grid">
-          <select id="newTaskSubject"><option>数学</option><option>408</option><option>英语</option><option>政治</option></select>
+          <select id="newTaskSubject"><option>数学</option><option>408</option><option>英语</option><option>政治</option><option>复盘</option></select>
           <input id="newTaskTitle" placeholder="任务名称">
           <input id="newTaskMinutes" type="number" min="5" step="5" placeholder="预计分钟">
           <button id="addTask" class="primary">添加任务</button>
