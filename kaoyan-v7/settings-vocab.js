@@ -105,8 +105,39 @@
     saveVocabState();renderVocab();
   });
 
-  window.addEventListener('DOMContentLoaded',()=>{renderTarget();renderVocab()},{once:true});
-  setTimeout(()=>{renderTarget();renderVocab()},300);
+  function polishCopy(){
+    document.title='考研作战台｜在职备考执行系统';
+    const eyebrow=document.querySelector('.topbar .eyebrow');
+    const title=document.querySelector('.topbar h1');
+    const sub=document.querySelector('.topbar p');
+    if(eyebrow)eyebrow.textContent='在职考研 · 每日执行系统';
+    if(title)title.textContent='考研作战台';
+    if(sub)sub.textContent='把复杂规划交给系统：每天只看该做什么、做到什么程度，并根据真实反馈持续调整。';
+
+    const dashboardHead=document.querySelector('#view-dashboard .hero-grid .panel .section-head');
+    if(dashboardHead){const h=dashboardHead.querySelector('h2'),p=dashboardHead.querySelector('p');if(h)h.textContent='今日推进';if(p)p.textContent='按班次和当前进度生成任务；完成、卡住和延期都会进入后续调整。'}
+
+    const plannerHead=document.querySelector('#view-today .planner-panel .section-head');
+    if(plannerHead){const h=plannerHead.querySelector('h2'),p=plannerHead.querySelector('p');if(h)h.textContent='今日学习计划';if(p)p.textContent='系统结合班次、学习进度和最近表现生成今天最值得做的任务。'}
+
+    const taskHead=document.querySelector('#view-today article:nth-of-type(2) .section-head');
+    if(taskHead){const h=taskHead.querySelector('h2'),p=taskHead.querySelector('p');if(h)h.textContent='今日任务清单';if(p)p.textContent='默认按计划执行；临时有事可以直接调整，不需要为了计划硬顶。'}
+
+    const feedback=document.querySelector('#view-today article:nth-of-type(3)');
+    if(feedback){const h=feedback.querySelector('h2'),p=feedback.querySelector('p');if(h)h.textContent='今日复盘输入';if(p)p.textContent='只记录真实结果和最大卡点，不需要自己诊断；这些数据会用于下一轮调度。'}
+
+    const vocabHead=document.querySelector('#view-vocab article:first-child .section-head');
+    if(vocabHead){const h=vocabHead.querySelector('h2'),p=vocabHead.querySelector('p');if(h)h.textContent='词汇 · 墨墨记录';if(p)p.textContent='单独追踪复习、新词和连续性，避免词汇在在职节奏里悄悄断掉。'}
+
+    const fragHead=document.querySelector('#view-fragment .section-head');
+    if(fragHead){const h=fragHead.querySelector('h2'),p=fragHead.querySelector('p');if(h)h.textContent='🧩 通勤 / 碎片任务池';if(p)p.textContent='把墨墨、政治音频、公式回想和错题卡片放进零碎时间，完整学习时段留给主线任务。'}
+
+    const history=document.querySelector('#view-history article');
+    if(history){const h=history.querySelector('h2'),p=history.querySelector('p');if(h)h.textContent='学习轨迹与复盘';if(p)p.textContent='按天保留任务、用时、正确率和卡点，让每次调整都有依据。'}
+  }
+
+  window.addEventListener('DOMContentLoaded',()=>{renderTarget();renderVocab();polishCopy()},{once:true});
+  setTimeout(()=>{renderTarget();renderVocab();polishCopy()},300);
 })();
 
 (()=>{
