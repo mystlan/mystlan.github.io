@@ -1,0 +1,11 @@
+{
+  "date": "2026-08-25",
+  "shift": "晚班",
+  "tasks": [
+    {"id":"0825-m1","subject":"数学","title":"函数基础快速检查","minutes":40},
+    {"id":"0825-m2","subject":"数学","title":"极限直观概念 + 左右极限","minutes":55},
+    {"id":"0825-m3","subject":"数学","title":"极限基础题 8–12 道","minutes":45},
+    {"id":"0825-c1","subject":"408","title":"一级指针抢救","minutes":45},
+    {"id":"0825-e1","subject":"英语","title":"墨墨恢复","minutes":35}
+  ]
+}
