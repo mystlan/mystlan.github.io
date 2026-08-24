@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>115天在职考研系统 V7</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">115天在职考研系统</div>
+      <h1>V7 · Web版</h1>
+      <p>前台轻量化：地图、任务、进度和历史分离加载。</p>
+    </div>
+    <div class="stage-box"><span>当前阶段</span><strong>基础重建</strong><small>Day 1：8/25</small></div>
+  </header>
+
+  <nav class="tabs" aria-label="主导航">
+    <button class="tab active" data-view="dashboard">驾驶舱</button>
+    <button class="tab" data-view="today">今日执行</button>
+    <button class="tab" data-view="map">学习地图</button>
+    <button class="tab" data-view="review">复习中心</button>
+    <button class="tab" data-view="history">历史与复盘</button>
+  </nav>
+
+  <main>
+    <section id="view-dashboard" class="view">
+      <div class="hero-grid">
+        <article class="panel">
+          <div class="section-head"><div><h2>今日执行概览</h2><p>只加载今天任务，不把全部历史塞进首页。</p></div><span id="todayRate" class="badge">0%</span></div>
+          <div class="progress"><span id="todayBar"></span></div>
+          <div id="todayMini" class="mini-list"></div>
+        </article>
+        <article class="panel">
+          <h2>当前重点</h2>
+          <div class="focus-list">
+            <div><span>数学一</span><b>函数、极限、连续</b></div>
+            <div><span>408</span><b>一级指针 → 数据结构</b></div>
+            <div><span>英语一</span><b>词汇恢复 + 阅读基线</b></div>
+            <div><span>政治</span><b>暂不抢黄金时间</b></div>
+          </div>
+        </article>
+      </div>
+      <div id="subjectCards" class="subject-grid"></div>
+      <article class="panel">
+        <h2>阶段路线</h2>
+        <div class="route">
+          <div class="route-item current"><b>① 基础重建</b><span>当前</span></div>
+          <div class="route-item"><b>② 第一轮完成</b><span>章节覆盖</span></div>
+          <div class="route-item"><b>③ 强化刷题</b><span>题型与薄弱点</span></div>
+          <div class="route-item"><b>④ 真题训练</b><span>专题 + 套卷</span></div>
+          <div class="route-item"><b>⑤ 冲刺回炉</b><span>高频错点</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section id="view-today" class="view hidden">
+      <article class="panel">
+        <div class="section-head"><div><h2>今日执行</h2><p>默认由我安排，你可以临时改动。</p></div><span id="todaySummary" class="badge">0 / 0 完成</span></div>
+        <div class="add-grid">
+          <select id="newTaskSubject"><option>数学</option><option>408</option><option>英语</option><option>政治</option></select>
+          <input id="newTaskTitle" placeholder="任务名称">
+          <input id="newTaskMinutes" type="number" min="5" step="5" placeholder="预计分钟">
+          <button id="addTask" class="primary">添加任务</button>
+        </div>
+        <div id="todayTasks" class="task-grid"></div>
+      </article>
+      <article class="panel">
+        <h2>今日学习反馈</h2>
+        <p class="muted">只填事实，不需要自己分析。</p>
+        <div class="feedback-grid">
+          <label>有效学习（小时）<input id="actualHours" type="number" min="0" step="0.1"></label>
+          <label>数学做题/正确<input id="mathQa" placeholder="如 12/8"></label>
+          <label>408做题/正确<input id="csQa" placeholder="如 10/6"></label>
+          <label>英语墨墨（分钟）<input id="wordMinutes" type="number" min="0"></label>
+          <label class="wide">最大卡点<textarea id="dayBlock"></textarea></label>
+          <label>状态<select id="dayEnergy"><option value="">请选择</option><option>很好</option><option>一般</option><option>疲惫</option><option>很差</option></select></label>
+        </div>
+        <button id="saveDay" class="primary">保存今日反馈</button>
+      </article>
+    </section>
+
+    <section id="view-map" class="view hidden">
+      <article class="panel">
+        <div class="map-toolbar">
+          <div class="map-tabs">
+            <button class="map-tab active" data-map="math">数学一</button>
+            <button class="map-tab" data-map="408">408</button>
+            <button class="map-tab" data-map="english">英语一</button>
+            <button class="map-tab" data-map="politics">政治</button>
+          </div>
+          <div class="map-actions"><button id="expandAll">全部展开</button><button id="collapseAll">全部收起</button></div>
+        </div>
+      </article>
+      <div class="map-layout">
+        <div id="mapMain" class="map-main"></div>
+        <aside class="panel sticky-detail"><h2>章节详情</h2><div id="mapDetail" class="muted">点击任一章节查看。</div></aside>
+      </div>
+    </section>
+
+    <section id="view-review" class="view hidden">
+      <div class="hero-grid">
+        <article class="panel"><h2>待复习</h2><div id="dueList" class="stack"></div></article>
+        <article class="panel"><h2>高危知识点</h2><div id="riskList" class="stack"></div></article>
+      </div>
+    </section>
+
+    <section id="view-history" class="view hidden">
+      <article class="panel">
+        <h2>历史与复盘</h2>
+        <p class="muted">历史按天保存，页面只渲染需要查看的记录。</p>
+        <div id="historyStats" class="subject-grid compact"></div>
+        <div id="historyDays" class="stack history-stack"></div>
+      </article>
+    </section>
+  </main>
+</div>
+<script src="./app.js" defer></script>
+</body>
+</html>
