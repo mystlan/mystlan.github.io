@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>115天在职考研系统 V7</title>
-<link rel="stylesheet" href="./styles.css?v=20260825-1052">
+<title>考研作战台</title>
+<link rel="stylesheet" href="./styles.css?v=20260825-1120">
 </head>
 <body>
 <div class="app-shell">
   <header class="topbar">
     <div>
-      <div class="eyebrow">115天在职考研系统</div>
-      <h1>V7 · Web版</h1>
-      <p>前台轻量化：地图、任务、进度和历史分离加载。</p>
+      <div class="eyebrow">115天在职考研计划</div>
+      <h1>考研作战台</h1>
+      <p>每天只看该做什么、做到什么程度；系统根据真实反馈持续调整后续任务。</p>
     </div>
     <div class="topbar-right">
       <div class="countdown-box">
@@ -24,7 +24,7 @@
           <button id="saveTargetDate" type="button" style="padding:6px 8px;font-size:12px">保存</button>
         </div>
       </div>
-      <div class="stage-box"><span>当前阶段</span><strong>基础重建</strong><small>按你的目标日动态判断</small></div>
+      <div class="stage-box"><span>当前阶段</span><strong>基础重建</strong><small>按目标日与真实进度动态判断</small></div>
     </div>
   </header>
 
@@ -35,14 +35,14 @@
     <button class="tab" data-view="fragment">🧩 碎片池</button>
     <button class="tab" data-view="map">学习地图</button>
     <button class="tab" data-view="review">复习中心</button>
-    <button class="tab" data-view="history">历史与复盘</button>
+    <button class="tab" data-view="history">学习轨迹</button>
   </nav>
 
   <main>
     <section id="view-dashboard" class="view">
       <div class="hero-grid">
         <article class="panel">
-          <div class="section-head"><div><h2>今日执行概览</h2><p>根据班次自动生成建议时间与学习任务。</p></div><span id="todayRate" class="badge">0%</span></div>
+          <div class="section-head"><div><h2>今日推进</h2><p>按班次、当前章节和近期反馈生成今天真正要完成的任务。</p></div><span id="todayRate" class="badge">0%</span></div>
           <div class="progress"><span id="todayBar"></span></div>
           <div id="todayMini" class="mini-list"></div>
         </article>
@@ -58,7 +58,7 @@
         </article>
       </div>
       <article class="panel" style="border-style:dashed">
-        <div class="section-head"><div><h2>🧩 通勤 / 碎片任务池</h2><p>墨墨、政治音频、公式默写、错题回看等轻任务统一放这里。</p></div><button class="primary" type="button" onclick="document.querySelector('.tab[data-view=fragment]')?.click()">打开碎片池</button></div>
+        <div class="section-head"><div><h2>🧩 通勤 / 碎片任务池</h2><p>把墨墨、政治音频、公式回想和错题回看放进通勤与零碎时间。</p></div><button class="primary" type="button" onclick="document.querySelector('.tab[data-view=fragment]')?.click()">打开碎片池</button></div>
       </article>
       <div id="subjectCards" class="subject-grid"></div>
       <article class="panel">
@@ -75,7 +75,7 @@
 
     <section id="view-today" class="view hidden">
       <article class="panel planner-panel">
-        <div class="section-head"><div><h2>AI式班次计划</h2><p>选班次后自动给出建议时间、学习量和任务结构；你只需要执行，必要时再微调。</p></div><span id="planTarget" class="badge">--</span></div>
+        <div class="section-head"><div><h2>今日学习计划</h2><p>系统负责拆任务、安排强度和顺序；你负责执行、验收和反馈。</p></div><span id="planTarget" class="badge">--</span></div>
         <div class="planner-controls">
           <label>今天班次
             <select id="shiftSelect">
@@ -95,7 +95,7 @@
       </article>
 
       <article class="panel">
-        <div class="section-head"><div><h2>今日执行</h2><p>默认由我安排，你可以临时改动。</p></div><span id="todaySummary" class="badge">0 / 0 完成</span></div>
+        <div class="section-head"><div><h2>今日任务清单</h2><p>完成不是终点；知识型任务会通过验收分数、正确率和掌握程度决定是否真正通过。</p></div><span id="todaySummary" class="badge">0 / 0 完成</span></div>
         <div class="add-grid">
           <select id="newTaskSubject"><option>数学</option><option>408</option><option>英语</option><option>政治</option><option>复盘</option></select>
           <input id="newTaskTitle" placeholder="任务名称">
@@ -105,8 +105,8 @@
         <div id="todayTasks" class="task-grid"></div>
       </article>
       <article class="panel">
-        <h2>今日学习反馈</h2>
-        <p class="muted">这里只填主科学习结果；墨墨数据改到“词汇”模块单独记录。</p>
+        <h2>今日复盘输入</h2>
+        <p class="muted">这里只记影响明天调度的关键信息；词汇在独立模块记录。</p>
         <div class="feedback-grid">
           <label>有效学习（小时）<input id="actualHours" type="number" min="0" step="0.1"></label>
           <label>数学做题/正确<input id="mathQa" placeholder="如 12/8"></label>
@@ -121,7 +121,7 @@
 
     <section id="view-vocab" class="view hidden">
       <article class="panel">
-        <div class="section-head"><div><h2>词汇 · 墨墨每日数据</h2><p>词汇单独管理，不再混进英语主科学习进度。</p></div><span id="vocabTodayBadge" class="badge">今日未记录</span></div>
+        <div class="section-head"><div><h2>词汇 · 墨墨记录</h2><p>只录墨墨当天的事实数据，系统负责计算连续性和趋势。</p></div><span id="vocabTodayBadge" class="badge">今日未记录</span></div>
         <div class="feedback-grid" style="margin-top:16px">
           <label>已学总词数<input id="vocabLearnedTotal" type="number" min="0" placeholder="如 1062"></label>
           <label>词库总词数<input id="vocabBookTotal" type="number" min="1" value="5683"></label>
@@ -136,7 +136,7 @@
       </article>
       <div id="vocabStats" class="subject-grid"></div>
       <article class="panel">
-        <div class="section-head"><div><h2>连续性与本周趋势</h2><p>防止在职备考中词汇悄悄断更。</p></div><span id="vocabStreakBadge" class="badge">连续 0 天</span></div>
+        <div class="section-head"><div><h2>连续性与本周趋势</h2><p>用趋势判断是否断更，不追求单日数字漂亮。</p></div><span id="vocabStreakBadge" class="badge">连续 0 天</span></div>
         <div class="subject-grid" style="margin-top:14px">
           <div class="metric"><span>连续打卡</span><b id="vocabStreak">0</b><small>天</small></div>
           <div class="metric"><span>本周新增</span><b id="vocabWeekNew">0</b><small>词</small></div>
@@ -146,7 +146,7 @@
         <div id="vocabTrend" style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;min-height:130px"></div>
       </article>
       <article class="panel">
-        <div class="section-head"><div><h2>词汇进度</h2><p>根据你每天填的墨墨数据计算。</p></div><span id="vocabProgressText" class="badge">0%</span></div>
+        <div class="section-head"><div><h2>词汇进度</h2><p>依据每天录入的墨墨数据更新。</p></div><span id="vocabProgressText" class="badge">0%</span></div>
         <div class="progress"><span id="vocabProgressBar"></span></div>
         <div id="vocabHistory" class="stack"></div>
       </article>
@@ -154,7 +154,7 @@
 
     <section id="view-fragment" class="view hidden">
       <article class="panel">
-        <div class="section-head"><div><h2>🧩 通勤 / 碎片任务池</h2><p>轻任务单独管理；选班次后会优先自动塞进通勤和零碎时间。</p></div><span id="fragmentEnabledCount" class="badge">0 项启用</span></div>
+        <div class="section-head"><div><h2>🧩 通勤 / 碎片任务池</h2><p>只放适合通勤和低专注时段的轻任务，不抢主科学习时间。</p></div><span id="fragmentEnabledCount" class="badge">0 项启用</span></div>
         <div class="add-grid" style="margin-top:14px">
           <select id="fragmentSubject"><option>词汇</option><option>政治</option><option>数学</option><option>408</option><option>复盘</option></select>
           <input id="fragmentTitle" placeholder="如 政治音频20分钟">
@@ -192,8 +192,8 @@
 
     <section id="view-history" class="view hidden">
       <article class="panel">
-        <h2>历史与复盘</h2>
-        <p class="muted">历史按天保存，页面只渲染需要查看的记录。</p>
+        <h2>学习轨迹与复盘</h2>
+        <p class="muted">按天保存真实执行结果，用来判断进度、薄弱点与后续调度。</p>
         <div id="historyStats" class="subject-grid compact"></div>
         <div id="historyDays" class="stack history-stack"></div>
       </article>
@@ -201,10 +201,11 @@
   </main>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script src="./cloud-sync.js?v=20260825-1052" defer></script>
-<script src="./app.js?v=20260825-1052" defer></script>
-<script src="./settings-vocab.js?v=20260825-1052" defer></script>
-<script src="./fragment-pool.js?v=20260825-1052" defer></script>
-<script src="./task-acceptance.js?v=20260825-1052" defer></script>
+<script src="./cloud-sync.js?v=20260825-1120" defer></script>
+<script src="./app.js?v=20260825-1120" defer></script>
+<script src="./settings-vocab.js?v=20260825-1120" defer></script>
+<script src="./fragment-pool.js?v=20260825-1120" defer></script>
+<script src="./task-acceptance.js?v=20260825-1120" defer></script>
+<script src="./wrong-questions.js?v=20260825-1120" defer></script>
 </body>
 </html>
