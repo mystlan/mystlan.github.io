@@ -55,53 +55,23 @@
   }
 
   function openModal(task){
-    ensureStyles();
-    document.querySelector('.acceptance-overlay')?.remove();
-    const old=state.taskAssessments[task.id]||{};
+    ensureStyles();document.querySelector('.acceptance-overlay')?.remove();const old=state.taskAssessments[task.id]||{};
     const overlay=document.createElement('div');overlay.className='acceptance-overlay';
-    overlay.innerHTML=`<div class="acceptance-modal" role="dialog" aria-modal="true" aria-labelledby="acceptanceTitle">
-      <div class="acceptance-head"><div><h3 id="acceptanceTitle">任务验收</h3><div class="acceptance-note">${esc(task.subject)}｜${esc(task.title)}</div></div><button type="button" class="acceptance-close" aria-label="关闭">×</button></div>
-      <div class="acceptance-grid">
-        <label>验收得分（0–100）<input id="accScore" type="number" min="0" max="100" step="1" value="${old.score??''}" placeholder="不填时可按正确率折算"></label>
-        <label>掌握程度<select id="accMastery"><option value="1">1 · 基本不会</option><option value="2">2 · 有印象</option><option value="3">3 · 基本会做</option><option value="4">4 · 比较稳定</option><option value="5">5 · 能独立讲清</option></select></label>
-        <label>做题数<input id="accTotal" type="number" min="0" step="1" value="${old.total??''}" placeholder="如 8"></label>
-        <label>正确数<input id="accCorrect" type="number" min="0" step="1" value="${old.correct??''}" placeholder="如 6"></label>
-        <label class="acceptance-wide">正确率（自动计算）<input id="accAccuracy" type="text" readonly value="${old.accuracy==null?'—':pct(old.accuracy)}"></label>
-        <label class="acceptance-wide">错题编号<input id="accWrong" type="text" value="${esc(old.wrongNumbers||'')}" placeholder="如 3、5、8；没有可留空"></label>
-        <label class="acceptance-wide">最大卡点<textarea id="accBlock" placeholder="一句话写清：卡在哪一步、哪个概念">${esc(old.maxBlock||'')}</textarea></label>
-      </div>
-      <div id="accResult" class="acceptance-result">填写后会自动判断“通过”或“需补学”。</div>
-      <div class="acceptance-actions"><button type="button" data-cancel>取消</button><button type="button" class="primary" data-save>保存验收</button></div>
-    </div>`;
-    document.body.appendChild(overlay);
-    overlay.querySelector('#accMastery').value=String(old.mastery||3);
+    overlay.innerHTML=`<div class="acceptance-modal" role="dialog" aria-modal="true" aria-labelledby="acceptanceTitle"><div class="acceptance-head"><div><h3 id="acceptanceTitle">任务验收</h3><div class="acceptance-note">${esc(task.subject)}｜${esc(task.title)}</div></div><button type="button" class="acceptance-close" aria-label="关闭">×</button></div><div class="acceptance-grid"><label>验收得分（0–100）<input id="accScore" type="number" min="0" max="100" step="1" value="${old.score??''}" placeholder="不填时可按正确率折算"></label><label>掌握程度<select id="accMastery"><option value="1">1 · 基本不会</option><option value="2">2 · 有印象</option><option value="3">3 · 基本会做</option><option value="4">4 · 比较稳定</option><option value="5">5 · 能独立讲清</option></select></label><label>做题数<input id="accTotal" type="number" min="0" step="1" value="${old.total??''}" placeholder="如 8"></label><label>正确数<input id="accCorrect" type="number" min="0" step="1" value="${old.correct??''}" placeholder="如 6"></label><label class="acceptance-wide">正确率（自动计算）<input id="accAccuracy" type="text" readonly value="${old.accuracy==null?'—':pct(old.accuracy)}"></label><label class="acceptance-wide">错题编号<input id="accWrong" type="text" value="${esc(old.wrongNumbers||'')}" placeholder="如 3、5、8；保存后自动生成错题草稿"></label><label class="acceptance-wide">最大卡点<textarea id="accBlock" placeholder="一句话写清：卡在哪一步、哪个概念">${esc(old.maxBlock||'')}</textarea></label></div><div id="accResult" class="acceptance-result">填写后会自动判断“通过”或“需补学”。有错题编号时，会自动在错题库生成待补原题记录。</div><div class="acceptance-actions"><button type="button" data-cancel>取消</button><button type="button" class="primary" data-save>保存验收</button></div></div>`;
+    document.body.appendChild(overlay);overlay.querySelector('#accMastery').value=String(old.mastery||3);
     const close=()=>overlay.remove();overlay.querySelector('.acceptance-close').addEventListener('click',close);overlay.querySelector('[data-cancel]').addEventListener('click',close);overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
     const score=overlay.querySelector('#accScore'),total=overlay.querySelector('#accTotal'),correct=overlay.querySelector('#accCorrect'),mastery=overlay.querySelector('#accMastery'),accOut=overlay.querySelector('#accAccuracy'),result=overlay.querySelector('#accResult');
-    const refresh=()=>{const r=compute(total.value,correct.value,score.value,mastery.value);accOut.value=pct(r.acc);result.innerHTML=`<b class="${r.pass?'acceptance-pass':'acceptance-relearn'}">${r.pass?'通过':'需补学'}</b> · ${decisionText(r)}`;return r};
+    const refresh=()=>{const r=compute(total.value,correct.value,score.value,mastery.value);accOut.value=pct(r.acc);result.innerHTML=`<b class="${r.pass?'acceptance-pass':'acceptance-relearn'}">${r.pass?'通过':'需补学'}</b> · ${decisionText(r)}<br><span class="acceptance-note">填写错题编号后，系统会自动在错题库建草稿；草稿必须补“原题截图或完整题干”才算完整。</span>`;return r};
     [score,total,correct,mastery].forEach(el=>el.addEventListener('input',refresh));refresh();
-    overlay.querySelector('[data-save]').addEventListener('click',()=>{
-      const q=Math.max(0,Math.floor(Number(total.value)||0)),c=Math.max(0,Math.floor(Number(correct.value)||0));if(q>0&&c>q){alert('正确数不能大于做题数。');return}
-      const r=refresh();
-      const assessment={taskId:task.id,subject:task.subject,title:task.title,date:todayKey(),score:r.score,total:q||null,correct:q?c:null,accuracy:r.acc,wrongNumbers:overlay.querySelector('#accWrong').value.trim(),maxBlock:overlay.querySelector('#accBlock').value.trim(),mastery:r.mastery,result:r.pass?'pass':'relearn',strong:r.strong,assessedAt:new Date().toISOString()};
-      state.taskAssessments[task.id]=assessment;
-      state.taskStatus[task.id]=r.pass?'done':(r.score<60||r.mastery<=2?'stuck':'partial');
-      createReviews(task,assessment);
-      save();close();renderToday();try{renderReview()}catch(e){}
-    });
+    overlay.querySelector('[data-save]').addEventListener('click',()=>{const q=Math.max(0,Math.floor(Number(total.value)||0)),c=Math.max(0,Math.floor(Number(correct.value)||0));if(q>0&&c>q){alert('正确数不能大于做题数。');return}const r=refresh();const assessment={taskId:task.id,subject:task.subject,title:task.title,date:todayKey(),score:r.score,total:q||null,correct:q?c:null,accuracy:r.acc,wrongNumbers:overlay.querySelector('#accWrong').value.trim(),maxBlock:overlay.querySelector('#accBlock').value.trim(),mastery:r.mastery,result:r.pass?'pass':'relearn',strong:r.strong,assessedAt:new Date().toISOString()};state.taskAssessments[task.id]=assessment;state.taskStatus[task.id]=r.pass?'done':(r.score<60||r.mastery<=2?'stuck':'partial');createReviews(task,assessment);save();window.kaoyanWrongQuestions?.syncFromAssessments?.();close();renderToday();try{renderReview()}catch(e){}});
   }
 
-  function decorate(){
-    ensureStyles();const tasks=allTasks();const cards=[...document.querySelectorAll('#todayTasks .task-card')];
-    cards.forEach((card,i)=>{const task=tasks[i];if(!task)return;const a=state.taskAssessments[task.id];const doneBtn=card.querySelector('[data-s="done"]');if(doneBtn)doneBtn.textContent=a?'重新验收':'验收完成';
-      if(a){const sum=document.createElement('div');sum.className='acceptance-summary';sum.innerHTML=`<b>${a.result==='pass'?'✅ 验收通过':'🧩 需补学'}</b><span class="acceptance-chip">得分 ${Math.round(a.score)}</span><span class="acceptance-chip">正确率 ${pct(a.accuracy)}</span><span class="acceptance-chip">掌握 ${a.mastery}/5</span>${a.wrongNumbers?`<span>错题：${esc(a.wrongNumbers)}</span>`:''}${a.maxBlock?`<span>卡点：${esc(a.maxBlock)}</span>`:''}`;card.appendChild(sum)}
-    });
-  }
+  function decorate(){ensureStyles();const tasks=allTasks();const cards=[...document.querySelectorAll('#todayTasks .task-card')];cards.forEach((card,i)=>{const task=tasks[i];if(!task)return;const a=state.taskAssessments[task.id];const doneBtn=card.querySelector('[data-s="done"]');if(doneBtn)doneBtn.textContent=a?'重新验收':'验收完成';if(a){const sum=document.createElement('div');sum.className='acceptance-summary';sum.innerHTML=`<b>${a.result==='pass'?'✅ 验收通过':'🧩 需补学'}</b><span class="acceptance-chip">得分 ${Math.round(a.score)}</span><span class="acceptance-chip">正确率 ${pct(a.accuracy)}</span><span class="acceptance-chip">掌握 ${a.mastery}/5</span>${a.wrongNumbers?`<span>错题：${esc(a.wrongNumbers)} · 已同步错题库草稿</span>`:''}${a.maxBlock?`<span>卡点：${esc(a.maxBlock)}</span>`:''}`;card.appendChild(sum)}})}
 
   const baseRenderToday=renderToday;renderToday=function(){baseRenderToday();decorate()};
-  const baseRenderReview=typeof renderReview==='function'?renderReview:null;
-  if(baseRenderReview){renderReview=function(){baseRenderReview();const due=document.getElementById('dueList');if(!due)return;const today=todayKey();const rows=(state.reviewSchedule||[]).filter(x=>x.date<=today).sort((a,b)=>a.date.localeCompare(b.date));if(rows.length){due.innerHTML=rows.slice(-12).reverse().map(x=>`<div class="history-item">📌 ${esc(x.date)} · ${esc(x.subject)}｜${esc(x.title)}</div>`).join('')}}}
-
-  document.getElementById('todayTasks')?.addEventListener('click',e=>{const btn=e.target.closest('button[data-s="done"]');if(!btn)return;e.preventDefault();e.stopImmediatePropagation();const card=btn.closest('.task-card');const cards=[...document.querySelectorAll('#todayTasks .task-card')];const idx=cards.indexOf(card);const task=allTasks()[idx];if(task)openModal(task)},true);
-
+  const baseRenderReview=typeof renderReview==='function'?renderReview:null;if(baseRenderReview){renderReview=function(){baseRenderReview();const due=document.getElementById('dueList');if(!due)return;const today=todayKey();const rows=(state.reviewSchedule||[]).filter(x=>x.date<=today).sort((a,b)=>a.date.localeCompare(b.date));if(rows.length){due.innerHTML=rows.slice(-12).reverse().map(x=>`<div class="history-item">📌 ${esc(x.date)} · ${esc(x.subject)}｜${esc(x.title)}</div>`).join('')}}}
+  document.getElementById('todayTasks')?.addEventListener('click',e=>{const btn=e.target.closest('button[data-s="done"]');if(!btn)return;e.preventDefault();e.stopImmediatePropagation();const card=btn.closest('.task-card'),cards=[...document.querySelectorAll('#todayTasks .task-card')],idx=cards.indexOf(card),task=allTasks()[idx];if(task)openModal(task)},true);
   decorate();try{renderReview()}catch(e){}
+
+  if(!document.querySelector('script[data-wrong-questions]')){const s=document.createElement('script');s.src='./wrong-questions.js?v=20260825-1115';s.defer=true;s.dataset.wrongQuestions='1';document.head.appendChild(s)}
 })();
